@@ -4,7 +4,7 @@ pipeline {
         choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select action: Apply or Destroy')
     }
     environment {
-        REPO_URL = 'https://github.com/Samir-Kesare/Opensearch-Infra.git'
+        REPO_URL = 'https://github.com/Samir-Kesare/Opensearch-Terra-Infra.git'
         TERRAFORM_WORKSPACE = "/var/lib/jenkins/workspace/${JOB_NAME}/"
     }
     stages {
