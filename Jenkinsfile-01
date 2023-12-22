@@ -1,0 +1,81 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'ACTION', choices: ['Apply', 'Destroy'], description: 'Select action: Apply or Destroy')
+    }
+    environment {
+        REPO_URL = 'https://github.com/Samir-Kesare/Opensearch-Infra.git'
+        TERRAFORM_WORKSPACE = "/var/lib/jenkins/workspace/${JOB_NAME}/"
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: "${REPO_URL}", credentialsId: 'opensearch-key']]])
+            }
+        } 
+        stage('Terraform Init') {
+            steps {
+                sh "cd ${env.TERRAFORM_WORKSPACE} && terraform init"
+            }
+        }
+        stage('Validate Code') {
+            steps {
+                sh "cd ${env.TERRAFORM_WORKSPACE} && terraform validate"
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh "cd ${env.TERRAFORM_WORKSPACE} && terraform plan"
+            }
+        }
+        stage('Approval For Apply') {
+            when {
+                expression { params.ACTION == 'Apply' }
+            }
+            steps {
+                input "Do you want to apply Terraform changes?"
+            }
+        }
+
+        stage('Terraform Apply') {
+            when {
+                expression { params.ACTION == 'Apply' }
+            }
+            steps {
+                sh """
+                    cd ${env.TERRAFORM_WORKSPACE}
+                    terraform apply -auto-approve
+                """       
+            }
+        }
+
+        stage('Approval for Destroy') {
+            when {
+                expression { params.ACTION == 'Destroy' }
+            }
+            steps {
+                input "Do you want to Terraform Destroy?"
+            }
+        }
+
+        stage('Terraform Destroy') {
+            when {
+                expression { params.ACTION == 'Destroy' }
+            }
+            steps {
+                sh "cd ${env.TERRAFORM_WORKSPACE} && terraform destroy -auto-approve"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Succeeded!'
+        }
+        failure {
+            echo 'Failed!'
+        }
+    }
+}
+

@@ -1,1 +1,1 @@
-# Opensearch-Terra-Infra
+# Opensearch-Infra
