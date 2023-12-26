@@ -9,7 +9,7 @@ root_vpc_name                 = "ninja-vpc-01"
 
 /*--------------- Public Subnets ---------------*/
 
-root_public_subnets_az   = ["us-east-2a", "us-east-2b"]
+root_public_subnets_az   = ["ap-northeast-1a", "ap-northeast-1c"]
 root_public_subnets_cidr = ["10.0.2.0/24", "10.0.4.0/24"]
 root_public_subnets_tags = [{
 
@@ -23,7 +23,7 @@ root_enable_map_public_ip_on_launch = true
 
 /*--------------- Private Subnets ---------------*/
 
-root_private_subnets_az   = ["us-east-2a", "us-east-2b"]
+root_private_subnets_az   = ["ap-northeast-1a", "ap-northeast-1c"]
 root_private_subnets_cidr = ["10.0.6.0/24", "10.0.8.0/24"]
 root_private_subnets_tags = [{
   "Name" = "ninja-priv-sub-01"
