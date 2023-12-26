@@ -53,7 +53,7 @@ root_pri_route_table_name = "ninja-route-priv-01"
 /*--------------- SG ---------------*/
 
 root_public_ingress_ports  = [22, 443, 80]
-root_private_ingress_ports = [22, 9200, 5601]
+root_private_ingress_ports = [22, 80, 9200, 5601]
 root_bastion_sg_name       = "bastion-SG"
 root_private_sg_name       = "private-SG"
 
